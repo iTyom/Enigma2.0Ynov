@@ -1,0 +1,17 @@
+<p>
+  login works!
+</p>
+
+
+<div class="wrapper-login">
+  <mat-form-field class="login-field" appearance="legacy">
+    <mat-label>Ton login</mat-label>
+    <input matInput placeholder="Ton login" [(ngModel)]="user.login">
+  </mat-form-field>
+
+  <mat-form-field class="password-field">
+    <input matInput type="password" placeholder="Ton mot de passe" [(ngModel)]="user.password">
+  </mat-form-field>
+
+  <button mat-flat-button color="primary" (click)="test()">Primary</button>
+</div>

@@ -1,1 +1,5 @@
 GET http://localhost:3000/ressources
+
+##
+
+POST http://localhost:8004/auth/code
