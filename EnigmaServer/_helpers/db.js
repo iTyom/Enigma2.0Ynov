@@ -4,5 +4,5 @@ mongoose.connect(config.connectionString, { useNewUrlParser: true, useUnifiedTop
 mongoose.Promise = global.Promise;
 
 module.exports = {
-    User: require('../users/user.model')
+    User: require('../src/models/user.model')
 };
