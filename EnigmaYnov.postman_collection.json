@@ -1,0 +1,227 @@
+{
+	"info": {
+		"_postman_id": "5330eb51-5e8e-4633-a338-bb1287a79dce",
+		"name": "EnigmaYnov",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "register Tom Tom",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n        \"login\": \"Tom\",\n        \"password\": \"Tom\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8004/auth/register",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8004",
+					"path": [
+						"auth",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "lastName",
+						"value": "tom",
+						"type": "text"
+					},
+					{
+						"key": "firstName",
+						"value": "ruscelli",
+						"type": "text"
+					},
+					{
+						"key": "login",
+						"value": "tom",
+						"type": "text"
+					},
+					{
+						"key": "password",
+						"value": "okk",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n        \"login\": \"Tom\",\n        \"password\": \"Tom\",\n        \"lastName\": \"Ruscelli\",\n        \"firstName\": \"Tom\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8004/auth/5de0d90216867d4cf9acae46",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8004",
+					"path": [
+						"auth",
+						"5de0d90216867d4cf9acae46"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getAll Users",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "lastName",
+						"value": "tom",
+						"type": "text"
+					},
+					{
+						"key": "firstName",
+						"value": "ruscelli",
+						"type": "text"
+					},
+					{
+						"key": "login",
+						"value": "tom",
+						"type": "text"
+					},
+					{
+						"key": "password",
+						"value": "okk",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8004/auth/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8004",
+					"path": [
+						"auth",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login Tom Tom",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "VG9tOlRvbQ==",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"username\":\"Tom\",\n\t\"password\":\"Tom\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8004/auth/login",
+					"host": [
+						"localhost"
+					],
+					"port": "8004",
+					"path": [
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8008/enigma/getCode",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "x-access-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjVkZThjODhiYTFhNWE2NDI1YTZjYzllMSIsImxvZ2luIjoiVG9tIiwicGFzc3dvcmQiOm51bGwsIl9fdiI6MCwiaWQiOiI1ZGU4Yzg4YmExYTVhNjQyNWE2Y2M5ZTEifSwiaWF0IjoxNTc1NTM5OTQ5LCJleHAiOjE1NzU1NTQzNDksImlzcyI6Imh0dHBzOi8vbGFyZXNpc3RhbmNlLmZyIn0.1OnFDK0TWGtmcObl46PE2NsvM5df6SXvzac0ewFpq_Q",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"langage\": \"js\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8008/enigma/getCode",
+					"host": [
+						"localhost"
+					],
+					"port": "8008",
+					"path": [
+						"enigma",
+						"getCode"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
