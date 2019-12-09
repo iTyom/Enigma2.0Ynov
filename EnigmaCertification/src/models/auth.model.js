@@ -1,16 +1,11 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
-// Une ressource est un Utilisateurs 
+const schema = new Schema({
+    login: { type: String, unique: true, required: true },
+    password: { type: String, required: true }
+});
 
-const authSchema = new mongoose.Schema({
-    login: {
-        type: String,
-        required: true,
-    },
-    password: {
-        type: Number,
-        required: true,
-    }
-})
+schema.set('toJSON', { virtuals: true });
 
-module.exports = mongoose.model('Auth', authSchema)
+module.exports = mongoose.model('Auth', schema);
