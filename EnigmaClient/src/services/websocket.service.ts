@@ -1,41 +1,35 @@
 import { Injectable } from '@angular/core';
-import * as io from 'socket.io-client';
 import { Observable } from 'rxjs';
-import * as Rx from 'rxjs';
-import { environment } from '../environments/environment';
+import { Observer } from 'rxjs';
+// import { Message } from '../model/message';
+import { Event } from '../models/enum';
+
+import * as socketIo from 'socket.io-client';
+
+const SERVER_URL = 'http://localhost:8008';
 
 @Injectable()
-export class WebsocketService {
+export class SocketService {
+    private socket;
 
-    constructor() { }
+    public initSocket(): void {
 
-    private subject: Rx.Subject<MessageEvent>;
-
-    public connect(url): Rx.Subject<MessageEvent> {
-        if (!this.subject) {
-            this.subject = this.create(url);
-            console.log("Successfully connected: " + url);
-        }
-        return this.subject;
+        this.socket = socketIo(SERVER_URL);
     }
 
-    private create(url): Rx.Subject<MessageEvent> {
-        let ws = new WebSocket(url);
+    public send(message: any): void {
+        this.socket.emit('message', message);
+    }
 
-        let observable = Rx.Observable.create((obs: Rx.Observer<MessageEvent>) => {
-            ws.onmessage = obs.next.bind(obs);
-            ws.onerror = obs.error.bind(obs);
-            ws.onclose = obs.complete.bind(obs);
-            return ws.close.bind(ws);
+    public onMessage(): Observable<any> {
+        return new Observable<any>(observer => {
+            this.socket.on('message', (data: any) => observer.next(data));
         });
-        let observer = {
-            next: (data: Object) => {
-                if (ws.readyState === WebSocket.OPEN) {
-                    ws.send(JSON.stringify(data));
-                }
-            }
-        };
-        return Rx.Subject.create(observer, observable);
     }
 
+    public onEvent(event: Event): Observable<any> {
+        return new Observable<Event>(observer => {
+            this.socket.on(event, () => observer.next());
+        });
+    }
 }

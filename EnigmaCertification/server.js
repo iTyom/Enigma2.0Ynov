@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-
+const cors = require('cors')
 const app = express();
 const port = 8004;
 const authRouter = require('./src/controllers/auth.controller')
@@ -10,9 +10,11 @@ const authRouter = require('./src/controllers/auth.controller')
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
 }) */
-
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({
+    extended: false
+}));
 app.use(bodyParser.json());
+app.use(cors());
 
 
 app.use('/auth', authRouter)

@@ -18,7 +18,6 @@
   },
   "homepage": "https://github.com/iTyom/Enigma2.0Ynov#readme",
   "dependencies": {
-    "bcrypt": "^3.0.7",
     "body-parser": "^1.7.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",

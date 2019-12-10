@@ -13,11 +13,13 @@ import {
 } from '@angular/material';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-
+import { SocketService } from '../services/websocket.service';
+import { DecryptComponent } from '../pages/decrypt/decrypt.component';
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent
+    LoginComponent,
+    DecryptComponent,
   ],
   imports: [
     BrowserModule,
@@ -30,7 +32,7 @@ import { HttpClientModule } from '@angular/common/http';
     FormsModule,
     HttpClientModule,
   ],
-  providers: [],
+  providers: [SocketService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
