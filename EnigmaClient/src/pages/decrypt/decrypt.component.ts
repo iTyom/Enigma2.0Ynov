@@ -66,7 +66,7 @@ export class DecryptComponent implements OnInit {
             from: this.user,
             content: message
         });
-        this.messageContent = 'ok';
+        this.messageContent = 'okkkk';
     }
 
     public async getCode() {
@@ -103,12 +103,12 @@ export class DecryptComponent implements OnInit {
                 this.messageDecrypted = eval(codeStringCopy);
                 if (this.messageDecrypted.includes('Tu déconnes pépé !'.toUpperCase())) {
                     this.result = 'Le message décodé est : ' + this.messageDecrypted + ' avec la clé : ' + i.toString();
+                    this.sendMessage(this.messageDecrypted);
                     return this.result;
                 }
             }
 
             // this.messageDecrypted = eval(this.codeString);
-            // this.sendMessage(this.messageDecrypted);
             // console.log("this.messageDecrypted : ", eval(this.codeString));
         });
     }

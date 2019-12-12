@@ -34,6 +34,10 @@ io.on('connection', function (socket) {
     console.log('a user connected');
 });
 
+io.on('message', function (socket) {
+    console.log('sss');
+});
+
 
 
 // start server

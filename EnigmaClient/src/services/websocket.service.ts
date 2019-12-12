@@ -18,6 +18,7 @@ export class SocketService {
     }
 
     public send(message: any): void {
+        console.log("TCL: SocketService -> message", message)
         this.socket.emit('message', message);
     }
 

@@ -3,8 +3,9 @@ module.exports = {
     getValidationSlug,
     getBatch,
 };
-messageCrypted = 'Uv eédpooft qéqé ! M\'ipmpdbvtuf b wsbjnfou fyjtué';
-messageCrypted2 = 'Vw féeqppgu réré ! E\'guv xtckogpv vgttkdng';
+// messageDecrypted = 'Tu déconnes pépé ! L\'Holocauste a vraiment existé';
+// messageCrypted = 'St cébnmmdr oéoé ! K\'Gnknbztrsd z uqzhldms dwhrsé';
+messageCrypted = 'Vw féeqppgu réré ! N\'Jqnqecwuvg c xtckogpv gzkuvé';
 
 batch = {
     message: messageCrypted,
@@ -27,6 +28,5 @@ async function getValidationSlug() {
 }
 
 async function getBatch() {
-    console.log("ok", batch)
     return batch;
 }

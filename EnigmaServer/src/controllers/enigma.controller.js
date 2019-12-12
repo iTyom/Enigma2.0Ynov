@@ -13,19 +13,24 @@ module.exports = router;
 
 function getCode(req, res, next) {
     enigmaService.getCode(req.body)
-        .then(data => data ? res.json(data) : res.status(400).json({ message: "Erreur" }))
+        .then(data => data ? res.json(data) : res.status(400).json({
+            message: "Erreur"
+        }))
         .catch(err => next(err));
 }
 
 function getValidationSlug(req, res, next) {
     enigmaService.getValidationSlug()
-        .then(data => data ? res.json(data) : res.status(400).json({ message: "Erreur" }))
+        .then(data => data ? res.json(data) : res.status(400).json({
+            message: "Erreur"
+        }))
         .catch(err => next(err));
 }
 
 function getBatch(req, res, next) {
-    console.log("ok")
     enigmaService.getBatch()
-        .then(data => data ? res.json(data) : res.status(400).json({ message: "Erreur" }))
+        .then(data => data ? res.json(data) : res.status(400).json({
+            message: "Erreur"
+        }))
         .catch(err => next(err));
 }
