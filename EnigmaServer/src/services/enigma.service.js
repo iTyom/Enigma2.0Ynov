@@ -3,13 +3,13 @@ module.exports = {
     getValidationSlug,
     getBatch,
 };
-messageCrypted = 'Vw féeqppgu réré ! N\'jqnqecwuvg c xtckogpv gzkuvé';
+messageCrypted = 'Uv eédpooft qéqé ! M\'ipmpdbvtuf b wsbjnfou fyjtué';
 messageCrypted2 = 'Vw féeqppgu réré ! E\'guv xtckogpv vgttkdng';
 
 batch = {
     message: messageCrypted,
     fromKey: 1,
-    toKey: 10,
+    toKey: 5,
 };
 
 
@@ -30,5 +30,3 @@ async function getBatch() {
     console.log("ok", batch)
     return batch;
 }
-
-

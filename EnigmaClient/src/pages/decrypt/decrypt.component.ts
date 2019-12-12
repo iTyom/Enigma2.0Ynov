@@ -24,6 +24,7 @@ export class DecryptComponent implements OnInit {
     result: string;
     messageDecrypted: string;
     codeString: string;
+    error: string;
 
     constructor(private socketService: SocketService, private authService: AuthService) {
     }
@@ -65,19 +66,26 @@ export class DecryptComponent implements OnInit {
             from: this.user,
             content: message
         });
-        this.messageContent = null;
+        this.messageContent = 'ok';
     }
 
-    public getCode() {
+    public async getCode() {
         const langage: { langage: string } = { langage: 'js' };
-        this.authService.getCode(this.token, langage).subscribe((codeString: string) => {
-            this.codeString = codeString;
+        const response = await this.authService.getCode(this.token, langage).toPromise().catch(res => {
+            this.error = res.error.message;
         });
+
+        if (response) {
+            // console.log("TCL: DecryptComponent -> getCode -> request", response)
+            this.codeString = response.toString();
+
+        }
     }
 
     public getValidationSlug() {
         this.authService.getValidationSlug(this.token).subscribe((validationSlug: string) => {
             this.validationSlug = validationSlug;
+
         });
     }
 
