@@ -20,6 +20,11 @@ export class DecryptComponent implements OnInit {
     ioConnection: any;
     action = Action;
     token: string;
+    validationSlug: string;
+    result: string;
+    messageDecrypted: string;
+    codeString: string;
+
     constructor(private socketService: SocketService, private authService: AuthService) {
     }
 
@@ -28,6 +33,8 @@ export class DecryptComponent implements OnInit {
         console.log("TCL: DecryptComponent -> ngOnInit -> this.token", this.token)
         this.initIoConnection();
         this.getCode();
+        this.user = new User();
+        this.user.login = "Tom";
     }
 
     private initIoConnection(): void {
@@ -35,7 +42,7 @@ export class DecryptComponent implements OnInit {
 
         this.ioConnection = this.socketService.onMessage()
             .subscribe((message: any) => {
-                this.messages.push(message);
+                this.messages.push("lol");
 
             });
 
@@ -63,12 +70,51 @@ export class DecryptComponent implements OnInit {
     }
 
     public getCode() {
-        this.authService.getCode(this.token, 'js').subscribe((dataCode: any) => {
-            console.log('data : ');
-
-            //this.sendMessage('Hello it\'s loggin\'s function !');
+        const langage: { langage: string } = { langage: 'js' };
+        this.authService.getCode(this.token, langage).subscribe((codeString: string) => {
+            this.codeString = codeString;
         });
     }
 
+    public getValidationSlug() {
+        this.authService.getValidationSlug(this.token).subscribe((validationSlug: string) => {
+            this.validationSlug = validationSlug;
+        });
+    }
 
+    public getBatch() {
+        this.authService.getBatch(this.token).subscribe(async (batch: batch) => {
+            this.codeString = this.codeString.replace('[STRING]', '"' + batch.message + '"');
+            console.log("code : ", this.codeString)
+            //this.messageDecrypted = this.caesarCipher();
+            let codeStringCopy;
+            for (let i = batch.fromKey; i < batch.toKey; i++) {
+                codeStringCopy = this.codeString;
+                codeStringCopy = codeStringCopy.replace('[FROMKEY]', i.toString());
+
+                this.messageDecrypted = eval(codeStringCopy);
+                console.log("test : ", this.messageDecrypted)
+                if (this.messageDecrypted.includes("Tu déconnes pépé !".toUpperCase())) {
+                    this.result = "Le message décodé est : " + this.messageDecrypted + " avec la clé : " + i.toString();
+                    return this.result;
+                }
+            }
+
+            //this.messageDecrypted = eval(this.codeString);
+            //this.sendMessage(this.messageDecrypted);
+            //console.log("this.messageDecrypted : ", eval(this.codeString));
+        });
+    }
+
+    public caesarCipher() {
+        //public caesarCipher() {let stringArray = []; for(let i = [FROMKEY];i<[TOKEY];i++){ stringArray.push([STRING].toUpperCase().replace(/[A-Z]/g, c => String.fromCharCode((c.charCodeAt(0) - 65 - i) % 26 + 65))); }return stringArray;}
+        //return "Vw féeqppgu réré ! N\'jqnqecwuvg c xtckogpv gzkuvé".toUpperCase().replace(/[A-Z]/g, c => String.fromCharCode((c.charCodeAt(0) - 65 - 2) % 26 + 65));
+        return "Vw féeqppgu réré ! N'jqnqecwuvg c xtckogpv gzkuvé".toUpperCase().replace(/[A-Z]/g, c => String.fromCharCode((c.charCodeAt(0) - 65 - 1) % 26 + 65));
+    }
+}
+
+export interface batch {
+    message: string,
+    fromKey: number,
+    toKey: number,
 }

@@ -7,25 +7,29 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 export class AuthService {
 
     private authApi = "http://localhost:8004/auth/login";
-    private enigmaApi = "http://localhost:8008/enigma/getCode"
-    private allowedOrigin: string[] = ["http://localhost:4200/", "http://localhost:8008", "http://localhost:8004/auth/login"];
+    private enigmaApi = "http://localhost:8008/enigma/"
+    private allowedOrigin: string[] = ['http://localhost:8008'];
 
     constructor(private httpClient: HttpClient) { }
 
     public login(login: string) {
         const headers = new HttpHeaders({ 'Authorization': login, 'Access-Control-Allow-Origin': this.allowedOrigin, 'Access-Control-Allow-Methods': 'GET,POST' });
-
-        console.log("loginEncoded:", login)
         return this.httpClient.get(this.authApi, { headers: headers });
     }
 
-    public getCode(token: string, langage: string) {
-        console.log("TCL: AuthService -> getCode -> token", token)
-
+    public getCode(token: string, langage: { langage: string }) {
         const headers = new HttpHeaders({ 'x-access-token': token, 'Access-Control-Allow-Origin': this.allowedOrigin, 'Access-Control-Allow-Methods': 'GET,POST' });
+        return this.httpClient.post(this.enigmaApi + 'getCode', langage, { headers: headers });
+    }
 
-        console.log("TCL: AuthService -> getCode -> headers", headers)
-        return this.httpClient.post(this.enigmaApi, langage, { headers: headers });
+    public getValidationSlug(token: string) {
+        const headers = new HttpHeaders({ 'x-access-token': token, 'Access-Control-Allow-Origin': this.allowedOrigin, 'Access-Control-Allow-Methods': 'GET,POST' });
+        return this.httpClient.get(this.enigmaApi + 'getValidationSlug', { headers: headers });
+    }
+
+    public getBatch(token: string) {
+        const headers = new HttpHeaders({ 'x-access-token': token, 'Access-Control-Allow-Origin': this.allowedOrigin, 'Access-Control-Allow-Methods': 'GET,POST' });
+        return this.httpClient.get(this.enigmaApi + 'getBatch', { headers: headers });
     }
 
 

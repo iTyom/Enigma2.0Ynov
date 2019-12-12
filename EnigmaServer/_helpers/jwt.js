@@ -20,9 +20,7 @@ async function isRevoked(req, payload, done) {
 };
 
 async function isAuthorized(req, res, next) {
-    console.log("TCL: isAuthorized -> req", req.headers)
     let token = req.headers['x-access-token'];
-    console.log("token : ", token)
     jwt.verify(token, config.secret, function (err, decoded) {
         if (err)
             return res.status(500).send({
@@ -30,7 +28,7 @@ async function isAuthorized(req, res, next) {
                 message: 'Failed to authenticate token.'
             });
 
-        // if everything good, save to request for use in other routes
+        // On save dans la req pour récupérer plus tard
         req.userId = decoded.id;
         next();
     });

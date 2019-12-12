@@ -1,1 +1,6 @@
-<button mat-flat-button color="primary" (click)="getCode()">Primary</button>
+<button mat-flat-button color="primary" (click)="getValidationSlug()">Récupérer le message de validation</button>
+<div *ngIf="validationSlug">
+    Le message de validation est : {{validationSlug}} <br>
+    <button mat-flat-button color="primary" (click)="getBatch()">Récupérer le batch a décrypter</button>
+    <div *ngIf="result"> {{result}} </div>
+</div>
