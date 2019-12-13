@@ -26,6 +26,7 @@ function register(req, res, next) {
         .then(user => res.json(user))
         .catch(err => next(err));
 }
+
 function getAll(req, res, next) {
     authService.getAll()
         .then(users => res.json(users))

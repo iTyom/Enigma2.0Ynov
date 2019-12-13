@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 const db = require('../../_helpers/db');
 const User = db.User;
 const bcrypt = require('bcrypt');
-const { base64encode, base64decode } = require('nodejs-base64');
+const { base64decode } = require('nodejs-base64');
 module.exports = {
     login,
     getAll,
@@ -13,7 +13,7 @@ module.exports = {
     delete: _delete
 };
 
-const jwtExpirySeconds = 14400
+const jwtExpirySeconds = 14400;
 
 async function login(req, res) {
     var loginEncoded = req.headers['authorization'];
@@ -22,9 +22,7 @@ async function login(req, res) {
     let loginDecoded = base64decode(loginEncoded);
     let loginSplited = loginDecoded.split(":");
     let login = loginSplited[0];
-    console.log("login : ", login)
     let password = loginSplited[1];
-    console.log("password : ", password)
 
     const user = await User.findOne({ login });
     if (user && bcrypt.compareSync(password, user.password)) {

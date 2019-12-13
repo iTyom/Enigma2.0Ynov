@@ -1,17 +1,18 @@
-<p>
-  login works!
-</p>
-
-
 <div class="wrapper-login">
-  <mat-form-field class="login-field" appearance="legacy">
-    <mat-label>Ton login</mat-label>
-    <input matInput placeholder="Ton login" [(ngModel)]="user.login">
-  </mat-form-field>
 
-  <mat-form-field class="password-field">
-    <input matInput type="password" placeholder="Ton mot de passe" [(ngModel)]="user.password">
-  </mat-form-field>
+  <div class="form">
+    <div class="wrapper-input">
+      <mat-form-field class="login-field" appearance="outline">
+        <mat-label>Login</mat-label>
+        <input matInput placeholder="Ton login" [(ngModel)]="user.login">
+      </mat-form-field>
 
-  <button mat-flat-button color="primary" (click)="login()">Primary</button>
+      <mat-form-field class="password-field" appearance="outline">
+        <mat-label>Mot de passe</mat-label>
+        <input matInput type="password" placeholder="Ton mot de passe" [(ngModel)]="user.password">
+      </mat-form-field>
+    </div>
+    <button mat-flat-button color="primary" (click)="login()">Se connecter</button>
+  </div>
+
 </div>
