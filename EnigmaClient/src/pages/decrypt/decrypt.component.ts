@@ -34,10 +34,11 @@ export class DecryptComponent implements OnInit {
 
     ngOnInit() {
         this.token = localStorage.getItem('token');
+
+        console.log("token", this.token)
         this.initIoConnection();
         this.getCodeToExecute();
-        this.user = new User();
-        this.user.login = "Tom";
+        this.getProfil()
         this.waitBatch()
     }
 
@@ -73,8 +74,15 @@ export class DecryptComponent implements OnInit {
     }
 
     public async waitBatch() {
-        if (this.batch)
+        if (!this.batch && this.codeToExecute && this.validationSlug) {
             this.onBatch();
+            console.log("Dispo")
+        }
+        else {
+            // Non dispo 
+            console.log("Non dispo");
+            this.socketService.sendNotAvailable(1000)
+        }
         await this.delay(10000);
 
         this.waitBatch();
@@ -103,9 +111,8 @@ export class DecryptComponent implements OnInit {
             this.error = data.error.message;
             console.log(data)
         }).then(codeToExecute => {
-            //this.codeString = String.
-            this.codeToExecute = atob(codeToExecute as string);
-            console.log("ok", this.codeToExecute);
+            if (codeToExecute)
+                this.codeToExecute = atob(codeToExecute as string);
         });
     }
 
@@ -146,6 +153,16 @@ export class DecryptComponent implements OnInit {
         //public caesarCipher() {let stringArray = []; for(let i = [FROMKEY];i<[TOKEY];i++){ stringArray.push([STRING].toUpperCase().replace(/[A-Z]/g, c => String.fromCharCode((c.charCodeAt(0) - 65 - i) % 26 + 65))); }return stringArray;}
         //return "Vw féeqppgu réré ! N\'jqnqecwuvg c xtckogpv gzkuvé".toUpperCase().replace(/[A-Z]/g, c => String.fromCharCode((c.charCodeAt(0) - 65 - 2) % 26 + 65));
         return "Vw féeqppgu réré ! N'jqnqecwuvg c xtckogpv gzkuvé".toUpperCase().replace(/[A-Z]/g, c => String.fromCharCode((c.charCodeAt(0) - 65 - 1) % 26 + 65));
+    }
+
+    public getProfil() {
+        this.user = new User();
+        let tokenDecoded: any;
+        if (this.token && this.token.length > 0)
+            tokenDecoded = JSON.parse(atob(this.token.split('.')[1]))
+        if (tokenDecoded)
+            this.user.login = tokenDecoded.user.login;
+        console.log("this.user.login", this.user.login)
     }
 }
 

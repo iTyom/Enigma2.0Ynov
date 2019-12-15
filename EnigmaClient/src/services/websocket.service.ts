@@ -21,6 +21,10 @@ export class SocketService {
         this.socket.emit('message', message);
     }
 
+    public sendNotAvailable(timeToWait: number) {
+        this.socket.emit('notAvailable', timeToWait);
+    }
+
     public onMessage(): Observable<any> {
         return new Observable<any>(observer => {
             this.socket.on('message', (data: any) => observer.next(data));
