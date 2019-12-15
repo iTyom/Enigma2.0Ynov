@@ -5,6 +5,7 @@ import { Observer } from 'rxjs';
 import { Event } from '../models/enum';
 
 import * as socketIo from 'socket.io-client';
+import { batch } from '../pages/decrypt/decrypt.component';
 
 const SERVER_URL = 'http://localhost:8008';
 
@@ -13,12 +14,10 @@ export class SocketService {
     private socket;
 
     public initSocket(): void {
-
         this.socket = socketIo(SERVER_URL);
     }
 
     public send(message: any): void {
-        console.log("TCL: SocketService -> message", message)
         this.socket.emit('message', message);
     }
 
@@ -26,6 +25,16 @@ export class SocketService {
         return new Observable<any>(observer => {
             this.socket.on('message', (data: any) => observer.next(data));
         });
+    }
+
+    public onBatch(): Observable<any> {
+        return new Observable<any>(observer => {
+            console.log("observer : ", observer)
+            this.socket.on('batch', data => {
+                console.log("data : ", data)
+                observer.next(data);
+            });
+        })
     }
 
     public onEvent(event: Event): Observable<any> {

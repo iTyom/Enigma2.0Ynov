@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const enigmaService = require('./src/services/enigma.service')
 const port = 8008;
 const cors = require('cors');
 app.use(cors());
@@ -30,19 +31,12 @@ app.use(function (req, res, next) {
 // api routes
 app.use('/enigma', require('./src/controllers/enigma.controller'));
 
-// io.origins(['localhost:4200', 'localhost:8008', 'localhost:8004']);
+io.on('connection', async function (socket) {
 
-io.on('connection', function (socket) {
-    console.log('a user connected');
+    const batch = await enigmaService.getBatch();
+
+    socket.emit('batch', {
+        type: 'batch',
+        data: batch,
+    });
 });
-
-io.on('message', function (socket) {
-    console.log('sss');
-});
-
-
-
-// start server
-// const server = app.listen(port, function () {
-//     console.log('Server listening on port ' + port);
-// });

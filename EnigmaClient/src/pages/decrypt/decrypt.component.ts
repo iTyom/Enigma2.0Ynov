@@ -5,6 +5,7 @@ import { SocketService } from '../../services/websocket.service';
 
 import { Action } from '../../models/enum';
 import { Event } from '../../models/enum';
+import { stringify } from 'querystring';
 @Component({
     selector: 'app-decrypt',
     templateUrl: './decrypt.component.html',
@@ -23,18 +24,21 @@ export class DecryptComponent implements OnInit {
     validationSlug: string;
     result: string;
     messageDecrypted: string;
-    codeString: string;
+    codeToExecute: string;
+    error: string;
+    messageCrypted: string;
+    batch: batch;
 
     constructor(private socketService: SocketService, private authService: AuthService) {
     }
 
     ngOnInit() {
         this.token = localStorage.getItem('token');
-        console.log("TCL: DecryptComponent -> ngOnInit -> this.token", this.token)
         this.initIoConnection();
-        this.getCode();
+        this.getCodeToExecute();
         this.user = new User();
         this.user.login = "Tom";
+        this.waitBatch()
     }
 
     private initIoConnection(): void {
@@ -43,8 +47,12 @@ export class DecryptComponent implements OnInit {
         this.ioConnection = this.socketService.onMessage()
             .subscribe((message: any) => {
                 this.messages.push("lol");
-
             });
+
+        // this.socketService.onBatch().subscribe(batch => {
+        //     console.log("batch", batch)
+        //     this.batch = batch;
+        // })
 
         this.socketService.onEvent(Event.CONNECT)
             .subscribe(() => {
@@ -57,6 +65,25 @@ export class DecryptComponent implements OnInit {
             });
     }
 
+    public onBatch() {
+        this.socketService.onBatch().subscribe(batch => {
+            console.log("batch", batch)
+            this.batch = batch;
+        })
+    }
+
+    public async waitBatch() {
+        if (this.batch)
+            this.onBatch();
+        await this.delay(10000);
+
+        this.waitBatch();
+    }
+
+    async delay(ms: number) {
+        await new Promise(resolve => setTimeout(() => resolve(), ms)).then();
+    }
+
     public sendMessage(message: string): void {
         if (!message) {
             return;
@@ -64,15 +91,21 @@ export class DecryptComponent implements OnInit {
 
         this.socketService.send({
             from: this.user,
-            content: message
+            content: this.messageDecrypted
         });
-        this.messageContent = null;
+        this.messageContent = this.messageDecrypted;
     }
 
-    public getCode() {
+    public getCodeToExecute() {
         const langage: { langage: string } = { langage: 'js' };
-        this.authService.getCode(this.token, langage).subscribe((codeString: string) => {
-            this.codeString = codeString;
+        const response = this.authService.getCodeToExecute(this.token, langage).toPromise();
+        response.catch(data => {
+            this.error = data.error.message;
+            console.log(data)
+        }).then(codeToExecute => {
+            //this.codeString = String.
+            this.codeToExecute = atob(codeToExecute as string);
+            console.log("ok", this.codeToExecute);
         });
     }
 
@@ -84,15 +117,16 @@ export class DecryptComponent implements OnInit {
 
     public getBatch() {
         this.authService.getBatch(this.token).subscribe(async (batch: batch) => {
-            this.codeString = this.codeString.replace('[STRING]', '"' + batch.message + '"');
-            console.log("code : ", this.codeString)
+            this.messageCrypted = batch.message;
+            this.codeToExecute = this.codeToExecute.replace('[STRING]', '"' + batch.message + '"');
+            console.log("code : ", this.codeToExecute)
             //this.messageDecrypted = this.caesarCipher();
-            let codeStringCopy;
+            let codeToExecuteCopy;
             for (let i = batch.fromKey; i < batch.toKey; i++) {
-                codeStringCopy = this.codeString;
-                codeStringCopy = codeStringCopy.replace('[FROMKEY]', i.toString());
+                codeToExecuteCopy = this.codeToExecute;
+                codeToExecuteCopy = codeToExecuteCopy.replace('[FROMKEY]', i.toString());
 
-                this.messageDecrypted = eval(codeStringCopy);
+                this.messageDecrypted = eval(codeToExecuteCopy);
                 console.log("test : ", this.messageDecrypted)
                 if (this.messageDecrypted.includes("Tu déconnes pépé !".toUpperCase())) {
                     this.result = "Le message décodé est : " + this.messageDecrypted + " avec la clé : " + i.toString();
@@ -117,6 +151,7 @@ export class DecryptComponent implements OnInit {
 
 export interface batch {
     message: string,
+    idMessage: number,
     fromKey: number,
     toKey: number,
 }

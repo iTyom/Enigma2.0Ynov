@@ -20,12 +20,12 @@ export class AuthService {
         return this.httpClient.get(this.authApi, { headers });
     }
 
-    public getCode(token: string, langage: { langage: string }) {
+    public getCodeToExecute(token: string, langage: { langage: string }) {
         const headers = new HttpHeaders({
             'x-access-token': token, 'Access-Control-Allow-Origin': this.allowedOrigin,
             'Access-Control-Allow-Methods': 'GET,POST'
         });
-        return this.httpClient.post(this.enigmaApi + 'getCode', langage, { headers });
+        return this.httpClient.post(this.enigmaApi + 'getCodeToExecute', langage, { headers });
     }
 
     public getValidationSlug(token: string) {

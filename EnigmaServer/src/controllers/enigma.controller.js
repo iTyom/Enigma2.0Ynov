@@ -5,14 +5,14 @@ const jwt = require('../../_helpers/jwt')
 
 
 // routes
-router.post('/getCode', jwt.isAuthorized, getCode);
+router.post('/getCodeToExecute', jwt.isAuthorized, getCodeToExecute);
 router.get('/getValidationSlug', jwt.isAuthorized, getValidationSlug);
 router.get('/getBatch', jwt.isAuthorized, getBatch);
 
 module.exports = router;
 
-function getCode(req, res, next) {
-    enigmaService.getCode(req.body)
+function getCodeToExecute(req, res, next) {
+    enigmaService.getCodeToExecute(req.body)
         .then(data => data ? res.json(data) : res.status(400).json({
             message: "Erreur"
         }))
