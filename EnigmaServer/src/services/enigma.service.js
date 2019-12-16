@@ -10,11 +10,31 @@ messageCrypted = 'Vw féeqppgu réré ! N\'Jqnqecwuvg c xtckogpv gzkuvé';
 
 async function getMessageCrypted() {
     messagesCrypted = {};
-    messagesCrypted[1] = { id: 1, message: 'Vw féeqppgu réré ! N\'Jqnqecwuvg c xtckogpv gzkuvé', treated: false }; // 2
-    messagesCrypted[2] = { id: 2, message: 'Wx géfrqqhv sésé ! Vwdu Zduv f\'hvw wurs elhq.', treated: false }; // 3
-    messagesCrypted[3] = { id: 3, message: 'Fg péoazzqe bébé ! V\'udmu pazo bxmupqd zafdq omgeq mg eézmf, eakql bdgpqzf !', treated: false }; // 12
-    messagesCrypted[4] = { id: 4, message: 'Mn wévhggxl iéié ! Ftbgmxgtgm mn kxlmx eà xm mn éobmxl wx ytbkx wxl uêmblxl.', treated: false }; // 19
-    messagesCrypted[5] = { id: 5, message: 'Rs béamllcq néné ! Rmsq lmq bpmïbcq tmlr w pcqrcp.', treated: false }; // 24
+    messagesCrypted[1] = {
+        id: 1,
+        message: 'Vw féeqppgu réré ! N\'Jqnqecwuvg c xtckogpv gzkuvé',
+        treated: false
+    }; // clé 2
+    messagesCrypted[2] = {
+        id: 2,
+        message: 'Wx géfrqqhv sésé ! Vwdu Zduv f\'hvw wurs elhq.',
+        treated: false
+    }; // 3
+    messagesCrypted[3] = {
+        id: 3,
+        message: 'Fg péoazzqe bébé ! V\'udmu pazo bxmupqd zafdq omgeq mg eézmf, eakql bdgpqzf !',
+        treated: false
+    }; // 12
+    messagesCrypted[4] = {
+        id: 4,
+        message: 'Mn wévhggxl iéié ! Ftbgmxgtgm mn kxlmx eà xm mn éobmxl wx ytbkx wxl uêmblxl.',
+        treated: false
+    }; // 19
+    messagesCrypted[5] = {
+        id: 5,
+        message: 'Rs béamllcq néné ! Rmsq lmq bpmïbcq tmlr w pcqrcp.',
+        treated: false
+    }; // 24
 
     return Object.values(messagesCrypted).find(x => !x.treated);
 }
@@ -30,7 +50,7 @@ async function getCodeToExecute(langage) {
 }
 
 async function getValidationSlug() {
-    console.log("messagesCrypted[5]", messagesCrypted);
+    // console.log("messagesCrypted[5]", messagesCrypted);
     const validationSlug = "Tu déconnes pépé !";
     return validationSlug;
 }
