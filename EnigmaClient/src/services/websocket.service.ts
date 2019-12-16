@@ -6,6 +6,7 @@ import { Event } from '../models/enum';
 
 import * as socketIo from 'socket.io-client';
 import { batch } from '../pages/decrypt/decrypt.component';
+import { User } from 'src/models/login.model';
 
 const SERVER_URL = 'http://localhost:8008';
 
@@ -19,6 +20,10 @@ export class SocketService {
 
     public send(message: any): void {
         this.socket.emit('message', message);
+    }
+
+    public sendUser(user: User): void {
+        this.socket.emit('user', user);
     }
 
     public sendNotAvailable(timeToWait: number) {

@@ -12,12 +12,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n        \"login\": \"Tom\",\n        \"password\": \"Tom\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
+					"raw": "{\n        \"login\": \"Tom\",\n        \"password\": \"Tom\"\n}"
 				},
 				"url": {
 					"raw": "http://localhost:8004/auth/register",
@@ -69,12 +64,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n        \"login\": \"Tom\",\n        \"password\": \"Tom\",\n        \"lastName\": \"Ruscelli\",\n        \"firstName\": \"Tom\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
+					"raw": "{\n        \"login\": \"Tom\",\n        \"password\": \"Tom\",\n        \"lastName\": \"Ruscelli\",\n        \"firstName\": \"Tom\"\n}"
 				},
 				"url": {
 					"raw": "http://localhost:8004/auth/5de0d90216867d4cf9acae46",
@@ -161,12 +151,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"username\":\"Tom\",\n\t\"password\":\"Tom\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
+					"raw": "{\n\t\"username\":\"Tom\",\n\t\"password\":\"Tom\"\n}"
 				},
 				"url": {
 					"raw": "localhost:8004/auth/login",
@@ -195,28 +180,80 @@
 					},
 					{
 						"key": "x-access-token",
-						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjVkZThjODhiYTFhNWE2NDI1YTZjYzllMSIsImxvZ2luIjoiVG9tIiwicGFzc3dvcmQiOm51bGwsIl9fdiI6MCwiaWQiOiI1ZGU4Yzg4YmExYTVhNjQyNWE2Y2M5ZTEifSwiaWF0IjoxNTc1NTM5OTQ5LCJleHAiOjE1NzU1NTQzNDksImlzcyI6Imh0dHBzOi8vbGFyZXNpc3RhbmNlLmZyIn0.1OnFDK0TWGtmcObl46PE2NsvM5df6SXvzac0ewFpq_Q",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjVkZjFmODdmZDY5YmU0MTEyMTJjNmM3NiIsImxvZ2luIjoiVG9tIiwicGFzc3dvcmQiOm51bGwsIl9fdiI6MCwiaWQiOiI1ZGYxZjg3ZmQ2OWJlNDExMjEyYzZjNzYifSwiaWF0IjoxNTc2MTQzMzg2LCJleHAiOjE1NzYxNTc3ODYsImlzcyI6Imh0dHBzOi8vbGFyZXNpc3RhbmNlLmZyIn0.OC3KfSt0i8LkwOmUJtxQ95IvhvQG7J2B_abaF3neil0",
 						"type": "text"
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"langage\": \"js\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
+					"raw": "{\n\t\"langage\": \"js\"\n}"
 				},
 				"url": {
-					"raw": "localhost:8008/enigma/getCode",
+					"raw": "localhost:8008/enigma/getCodeToExecute",
 					"host": [
 						"localhost"
 					],
 					"port": "8008",
 					"path": [
 						"enigma",
-						"getCode"
+						"getCodeToExecute"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8008/enigma/getValidationSlug",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-access-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjVkZjFmODdmZDY5YmU0MTEyMTJjNmM3NiIsImxvZ2luIjoiVG9tIiwicGFzc3dvcmQiOm51bGwsIl9fdiI6MCwiaWQiOiI1ZGYxZjg3ZmQ2OWJlNDExMjEyYzZjNzYifSwiaWF0IjoxNTc2MTQ1MDI2LCJleHAiOjE1NzYxNTk0MjYsImlzcyI6Imh0dHBzOi8vbGFyZXNpc3RhbmNlLmZyIn0.zEN7OFaJsQi-ZQdiDIywW49UBme5b_U_AkZrwRrN340",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8008/enigma/getValidationSlug",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8008",
+					"path": [
+						"enigma",
+						"getValidationSlug"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "register Tom2 Tom2",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n        \"login\": \"Tom2\",\n        \"password\": \"Tom2\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8004/auth/register",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8004",
+					"path": [
+						"auth",
+						"register"
 					]
 				}
 			},

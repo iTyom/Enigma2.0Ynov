@@ -35,11 +35,11 @@ export class DecryptComponent implements OnInit {
     ngOnInit() {
         this.token = localStorage.getItem('token');
 
-        console.log("token", this.token)
+        console.log('token', this.token);
+        this.getProfil();
         this.initIoConnection();
         this.getCodeToExecute();
-        this.getProfil()
-        this.waitBatch()
+        this.waitBatch();
     }
 
     private initIoConnection(): void {
@@ -47,13 +47,15 @@ export class DecryptComponent implements OnInit {
 
         this.ioConnection = this.socketService.onMessage()
             .subscribe((message: any) => {
-                this.messages.push("lol");
+                this.messages.push('lol');
             });
 
         // this.socketService.onBatch().subscribe(batch => {
         //     console.log("batch", batch)
         //     this.batch = batch;
         // })
+
+        this.sendUser(this.user);
 
         this.socketService.onEvent(Event.CONNECT)
             .subscribe(() => {
@@ -68,7 +70,7 @@ export class DecryptComponent implements OnInit {
 
     public onBatch() {
         this.socketService.onBatch().subscribe(batch => {
-            console.log("batch", batch)
+            console.log('batch', batch);
             this.batch = batch;
         })
     }
@@ -76,12 +78,11 @@ export class DecryptComponent implements OnInit {
     public async waitBatch() {
         if (!this.batch && this.codeToExecute && this.validationSlug) {
             this.onBatch();
-            console.log("Dispo")
-        }
-        else {
-            // Non dispo 
-            console.log("Non dispo");
-            this.socketService.sendNotAvailable(1000)
+            console.log('Dispo')
+        } else {
+            // Non dispo
+            console.log('Non dispo');
+            this.socketService.sendNotAvailable(1000);
         }
         await this.delay(10000);
 
@@ -104,6 +105,16 @@ export class DecryptComponent implements OnInit {
         this.messageContent = this.messageDecrypted;
     }
 
+    public sendUser(user: User): void {
+        console.log("TCL: DecryptComponent -> user", user)
+        if (!user) {
+            return;
+        }
+
+        this.socketService.sendUser(this.user);
+        this.messageContent = this.messageDecrypted;
+    }
+
     public getCodeToExecute() {
         const langage: { langage: string } = { langage: 'js' };
         const response = this.authService.getCodeToExecute(this.token, langage).toPromise();
@@ -111,8 +122,9 @@ export class DecryptComponent implements OnInit {
             this.error = data.error.message;
             console.log(data)
         }).then(codeToExecute => {
-            if (codeToExecute)
+            if (codeToExecute) {
                 this.codeToExecute = atob(codeToExecute as string);
+            }
         });
     }
 
@@ -122,47 +134,49 @@ export class DecryptComponent implements OnInit {
         });
     }
 
-    public getBatch() {
-        this.authService.getBatch(this.token).subscribe(async (batch: batch) => {
-            this.messageCrypted = batch.message;
-            this.codeToExecute = this.codeToExecute.replace('[STRING]', '"' + batch.message + '"');
-            console.log("code : ", this.codeToExecute)
-            //this.messageDecrypted = this.caesarCipher();
-            let codeToExecuteCopy;
-            for (let i = batch.fromKey; i < batch.toKey; i++) {
-                codeToExecuteCopy = this.codeToExecute;
-                codeToExecuteCopy = codeToExecuteCopy.replace('[FROMKEY]', i.toString());
+    // public getBatch() {
+    //     this.authService.getBatch(this.token).subscribe(async (batch: batch) => {
+    //         this.messageCrypted = batch.message;
+    //         this.codeToExecute = this.codeToExecute.replace('[STRING]', '"' + batch.message + '"');
+    //         console.log('code : ', this.codeToExecute)
+    //         // this.messageDecrypted = this.caesarCipher();
+    //         let codeToExecuteCopy;
+    //         for (let i = batch.fromKey; i < batch.toKey; i++) {
+    //             codeToExecuteCopy = this.codeToExecute;
+    //             codeToExecuteCopy = codeToExecuteCopy.replace('[FROMKEY]', i.toString());
 
-                this.messageDecrypted = eval(codeToExecuteCopy);
-                console.log("test : ", this.messageDecrypted)
-                if (this.messageDecrypted.includes("Tu déconnes pépé !".toUpperCase())) {
-                    this.result = "Le message décodé est : " + this.messageDecrypted + " avec la clé : " + i.toString();
-                    this.sendMessage(this.messageDecrypted);
-                    return this.result;
-                } else {
+    //             // tslint:disable-next-line:no-eval
+    //             this.messageDecrypted = eval(codeToExecuteCopy);
+    //             console.log('test : ', this.messageDecrypted)
+    //             if (this.messageDecrypted.includes('Tu déconnes pépé !'.toUpperCase())) {
+    //                 this.result = 'Le message décodé est : ' + this.messageDecrypted + ' avec la clé : ' + i.toString();
+    //                 this.sendMessage(this.messageDecrypted);
+    //                 return this.result;
+    //             } else {
 
-                }
-            }
+    //             }
+    //         }
 
-            //this.messageDecrypted = eval(this.codeString);
-            //console.log("this.messageDecrypted : ", eval(this.codeString));
-        });
-    }
+    //         // this.messageDecrypted = eval(this.codeString);
+    //         // console.log("this.messageDecrypted : ", eval(this.codeString));
+    //     });
+    // }
 
     public caesarCipher() {
-        //public caesarCipher() {let stringArray = []; for(let i = [FROMKEY];i<[TOKEY];i++){ stringArray.push([STRING].toUpperCase().replace(/[A-Z]/g, c => String.fromCharCode((c.charCodeAt(0) - 65 - i) % 26 + 65))); }return stringArray;}
-        //return "Vw féeqppgu réré ! N\'jqnqecwuvg c xtckogpv gzkuvé".toUpperCase().replace(/[A-Z]/g, c => String.fromCharCode((c.charCodeAt(0) - 65 - 2) % 26 + 65));
-        return "Vw féeqppgu réré ! N'jqnqecwuvg c xtckogpv gzkuvé".toUpperCase().replace(/[A-Z]/g, c => String.fromCharCode((c.charCodeAt(0) - 65 - 1) % 26 + 65));
+        return 'Vw féeqppgu réré ! N\'jqnqecwuvg c xtckogpv gzkuvé'.toUpperCase()
+            .replace(/[A-Z]/g, c => String.fromCharCode((c.charCodeAt(0) - 65 - 1) % 26 + 65));
     }
 
     public getProfil() {
         this.user = new User();
         let tokenDecoded: any;
-        if (this.token && this.token.length > 0)
+        if (this.token && this.token.length > 0) {
             tokenDecoded = JSON.parse(atob(this.token.split('.')[1]))
-        if (tokenDecoded)
+        }
+        if (tokenDecoded) {
             this.user.login = tokenDecoded.user.login;
-        console.log("this.user.login", this.user.login)
+        }
+        console.log('this.user.login', this.user.login)
     }
 }
 
