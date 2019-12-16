@@ -165,6 +165,7 @@ export class DecryptComponent implements OnInit {
                 if (this.messageDecrypted.includes('Tu déconnes pépé !'.toUpperCase())) {
                     this.result = 'Le message décodé est : ' + this.messageDecrypted + ' avec la clé : ' + i.toString();
                     this.sendMessage(this.messageDecrypted);
+                    this.batch = null;
                     return this.result;
                 } else {
 
