@@ -18,6 +18,10 @@ export class SocketService {
         this.socket = socketIo(SERVER_URL);
     }
 
+    public initSocketServeyr(): void {
+
+    }
+
     public send(message: any): void {
         this.socket.emit('message', message);
     }
@@ -36,11 +40,10 @@ export class SocketService {
         });
     }
 
-    public onBatch(): Observable<any> {
-        return new Observable<any>(observer => {
-            console.log("observer : ", observer)
-            this.socket.on('batch', data => {
-                console.log("data : ", data)
+    public onBatch(): Observable<batch> {
+        return new Observable<batch>(observer => {
+            this.socket.on('batch', (data) => {
+                console.log("data : ")
                 observer.next(data);
             });
         })

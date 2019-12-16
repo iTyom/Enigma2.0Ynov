@@ -27,7 +27,7 @@ export class DecryptComponent implements OnInit {
     codeToExecute: string;
     error: string;
     messageCrypted: string;
-    batch: batch;
+    batch: any;
 
     constructor(private socketService: SocketService, private authService: AuthService) {
     }
@@ -39,8 +39,11 @@ export class DecryptComponent implements OnInit {
         this.getProfil();
         this.initIoConnection();
         this.getCodeToExecute();
+        this.onBatch();
         this.waitBatch();
     }
+
+
 
     private initIoConnection(): void {
         this.socketService.initSocket();
@@ -70,12 +73,21 @@ export class DecryptComponent implements OnInit {
 
     public onBatch() {
         this.socketService.onBatch().subscribe(batch => {
-            console.log('batch', batch);
+            // if (!this.batch && this.codeToExecute && this.validationSlug) {
+            // console.log('Dispo', batch)
             this.batch = batch;
+            // } else {
+            // console.log('Non Dispo')
+
+            // }
         })
+        console.log("TCL: DecryptComponent -> onBatch -> this.batch", this.batch)
     }
 
     public async waitBatch() {
+        console.log("TCL: DecryptComponent -> waitBatch -> this.batch", this.batch)
+        console.log("TCL: DecryptComponent -> waitBatch -> this.codeToExecute", this.codeToExecute)
+        console.log("TCL: DecryptComponent -> waitBatch -> this.validationSlug", this.validationSlug)
         if (!this.batch && this.codeToExecute && this.validationSlug) {
             this.onBatch();
             console.log('Dispo')
@@ -83,8 +95,9 @@ export class DecryptComponent implements OnInit {
             // Non dispo
             console.log('Non dispo');
             this.socketService.sendNotAvailable(1000);
+            this.getBatch();
         }
-        await this.delay(10000);
+        await this.delay(10);
 
         this.waitBatch();
     }
@@ -134,33 +147,36 @@ export class DecryptComponent implements OnInit {
         });
     }
 
-    // public getBatch() {
-    //     this.authService.getBatch(this.token).subscribe(async (batch: batch) => {
-    //         this.messageCrypted = batch.message;
-    //         this.codeToExecute = this.codeToExecute.replace('[STRING]', '"' + batch.message + '"');
-    //         console.log('code : ', this.codeToExecute)
-    //         // this.messageDecrypted = this.caesarCipher();
-    //         let codeToExecuteCopy;
-    //         for (let i = batch.fromKey; i < batch.toKey; i++) {
-    //             codeToExecuteCopy = this.codeToExecute;
-    //             codeToExecuteCopy = codeToExecuteCopy.replace('[FROMKEY]', i.toString());
+    public getBatch() {
+        // this.authService.getBatch(this.token).subscribe(async (batch: batch) => {
+        if (this.batch && this.codeToExecute && this.validationSlug) {
+            this.messageCrypted = this.batch.data.message;
+            this.codeToExecute = this.codeToExecute.replace('[STRING]', '"' + this.batch.data.message + '"');
+            console.log('code : ', this.codeToExecute)
+            // this.messageDecrypted = this.caesarCipher();
+            let codeToExecuteCopy;
+            for (let i = this.batch.data.fromKey; i < this.batch.data.toKey; i++) {
+                codeToExecuteCopy = this.codeToExecute;
+                codeToExecuteCopy = codeToExecuteCopy.replace('[FROMKEY]', i.toString());
 
-    //             // tslint:disable-next-line:no-eval
-    //             this.messageDecrypted = eval(codeToExecuteCopy);
-    //             console.log('test : ', this.messageDecrypted)
-    //             if (this.messageDecrypted.includes('Tu déconnes pépé !'.toUpperCase())) {
-    //                 this.result = 'Le message décodé est : ' + this.messageDecrypted + ' avec la clé : ' + i.toString();
-    //                 this.sendMessage(this.messageDecrypted);
-    //                 return this.result;
-    //             } else {
+                // tslint:disable-next-line:no-eval
+                this.messageDecrypted = eval(codeToExecuteCopy);
+                console.log('test : ', this.messageDecrypted)
+                if (this.messageDecrypted.includes('Tu déconnes pépé !'.toUpperCase())) {
+                    this.result = 'Le message décodé est : ' + this.messageDecrypted + ' avec la clé : ' + i.toString();
+                    this.sendMessage(this.messageDecrypted);
+                    return this.result;
+                } else {
 
-    //             }
-    //         }
+                }
+            }
+        }
 
-    //         // this.messageDecrypted = eval(this.codeString);
-    //         // console.log("this.messageDecrypted : ", eval(this.codeString));
-    //     });
-    // }
+
+        // this.messageDecrypted = eval(this.codeString);
+        // console.log("this.messageDecrypted : ", eval(this.codeString));
+        // });
+    }
 
     public caesarCipher() {
         return 'Vw féeqppgu réré ! N\'jqnqecwuvg c xtckogpv gzkuvé'.toUpperCase()

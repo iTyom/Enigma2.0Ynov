@@ -37,6 +37,7 @@ io.on('connection', async function (socket) {
 
     socket.on('user', user => {
         console.log('user : ', user)
+
     });
 
     socket.emit('batch', {
