@@ -26,6 +26,10 @@ export class SocketService {
         this.socket.emit('message', message);
     }
 
+    public sendDecryptedBatch(decryptedBatch: any): void {
+        this.socket.emit('decryptedBatch', decryptedBatch);
+    }
+
     public sendUser(user: User): void {
         this.socket.emit('user', user);
     }

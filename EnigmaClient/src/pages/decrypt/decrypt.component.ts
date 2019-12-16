@@ -28,6 +28,7 @@ export class DecryptComponent implements OnInit {
     error: string;
     messageCrypted: string;
     batch: any;
+    decryptedBatch: decryptedBatch;
 
     constructor(private socketService: SocketService, private authService: AuthService) {
     }
@@ -81,13 +82,9 @@ export class DecryptComponent implements OnInit {
 
             // }
         })
-        console.log("TCL: DecryptComponent -> onBatch -> this.batch", this.batch)
     }
 
     public async waitBatch() {
-        console.log("TCL: DecryptComponent -> waitBatch -> this.batch", this.batch)
-        console.log("TCL: DecryptComponent -> waitBatch -> this.codeToExecute", this.codeToExecute)
-        console.log("TCL: DecryptComponent -> waitBatch -> this.validationSlug", this.validationSlug)
         if (!this.batch && this.codeToExecute && this.validationSlug) {
             this.onBatch();
             console.log('Dispo')
@@ -119,7 +116,6 @@ export class DecryptComponent implements OnInit {
     }
 
     public sendUser(user: User): void {
-        console.log("TCL: DecryptComponent -> user", user)
         if (!user) {
             return;
         }
@@ -152,20 +148,28 @@ export class DecryptComponent implements OnInit {
         if (this.batch && this.codeToExecute && this.validationSlug) {
             this.messageCrypted = this.batch.data.message;
             this.codeToExecute = this.codeToExecute.replace('[STRING]', '"' + this.batch.data.message + '"');
-            console.log('code : ', this.codeToExecute)
             // this.messageDecrypted = this.caesarCipher();
             let codeToExecuteCopy;
             for (let i = this.batch.data.fromKey; i < this.batch.data.toKey; i++) {
                 codeToExecuteCopy = this.codeToExecute;
                 codeToExecuteCopy = codeToExecuteCopy.replace('[FROMKEY]', i.toString());
+                console.log("TCL: DecryptComponent -> getBatch -> codeToExecuteCopy", codeToExecuteCopy)
 
                 // tslint:disable-next-line:no-eval
-                this.messageDecrypted = eval(codeToExecuteCopy);
-                console.log('test : ', this.messageDecrypted)
-                if (this.messageDecrypted.includes('Tu déconnes pépé !'.toUpperCase())) {
-                    this.result = 'Le message décodé est : ' + this.messageDecrypted + ' avec la clé : ' + i.toString();
-                    this.sendMessage(this.messageDecrypted);
+                const messageDecrypted = eval(codeToExecuteCopy);
+                console.log("TCL: DecryptComponent -> getBatch -> messageDecrypted", messageDecrypted)
+                if (messageDecrypted.includes('Tu déconnes pépé !')) {
+                    this.result = 'Le message décodé est : ' + messageDecrypted + ' avec la clé : ' + i.toString();
+                    // this.sendMessage(this.messageDecrypted);
+                    const decryptedBatch: decryptedBatch = {
+                        messageCrypted: btoa(this.batch.data.message),
+                        messageDecrypted: btoa(messageDecrypted),
+                        key: i,
+                    }
+                    this.sendDecryptedBatch(decryptedBatch);
+                    console.log("TCL: DecryptComponent -> getBatch -> decryptedBatch", decryptedBatch)
                     this.batch = null;
+
                     return this.result;
                 } else {
 
@@ -177,6 +181,10 @@ export class DecryptComponent implements OnInit {
         // this.messageDecrypted = eval(this.codeString);
         // console.log("this.messageDecrypted : ", eval(this.codeString));
         // });
+    }
+
+    public sendDecryptedBatch(decryptedBatch: decryptedBatch) {
+        this.socketService.sendDecryptedBatch(decryptedBatch);
     }
 
     public caesarCipher() {
@@ -202,4 +210,10 @@ export interface batch {
     idMessage: number,
     fromKey: number,
     toKey: number,
+}
+
+export interface decryptedBatch {
+    messageCrypted: string,
+    messageDecrypted: string,
+    key: number,
 }
