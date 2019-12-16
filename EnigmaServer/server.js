@@ -1,8 +1,8 @@
 const express = require('express');
 const app = express();
-const enigmaService = require('./src/services/enigma.service')
 const port = 8008;
 const cors = require('cors');
+const socketService = require('./src/services/websocket.service')
 app.use(cors());
 
 
@@ -11,7 +11,7 @@ const server = app.listen(port, function () {
 });
 
 const bodyParser = require('body-parser');
-const io = require('socket.io').listen(server);
+
 
 app.use(bodyParser.urlencoded({
     extended: false
@@ -31,17 +31,4 @@ app.use(function (req, res, next) {
 // api routes
 app.use('/enigma', require('./src/controllers/enigma.controller'));
 
-io.on('connection', async function (socket) {
-
-    const batch = await enigmaService.getBatch();
-
-    socket.on('user', user => {
-        console.log('user : ', user)
-
-    });
-
-    socket.emit('batch', {
-        type: 'batch',
-        data: batch,
-    });
-});
+socketService.defineSocket(server);
