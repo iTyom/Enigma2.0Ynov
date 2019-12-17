@@ -156,8 +156,6 @@ export class DecryptComponent implements OnInit {
 
                 // tslint:disable-next-line:no-eval
                 const messageDecrypted = eval(codeToExecuteCopy);
-                console.log("TCL: DecryptComponent -> getBatch -> codeToExecuteCopy", codeToExecuteCopy)
-                console.log("TCL: DecryptComponent -> getBatch -> messageDecrypted", messageDecrypted)
                 if (messageDecrypted.includes('Tu déconnes pépé !')) {
                     this.result = 'Le message décodé est : ' + messageDecrypted + ' avec la clé : ' + i.toString();
                     // this.sendMessage(this.messageDecrypted);
