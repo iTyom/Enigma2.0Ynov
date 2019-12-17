@@ -94,7 +94,7 @@ export class DecryptComponent implements OnInit {
             this.socketService.sendNotAvailable(1000);
             this.getBatch();
         }
-        await this.delay(10);
+        await this.delay(1000);
 
         this.waitBatch();
     }
