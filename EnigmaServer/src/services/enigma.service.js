@@ -48,24 +48,29 @@ async function getMessagesCrypted() {
 }
 
 async function getCodeToExecute(langage) {
-    let ceasarCipher = "function decode() {return [STRING].toUpperCase().replace(/[A-Z]/g, c => String.fromCharCode((c.charCodeAt(0) - 65 - [FROMKEY]) % 26 + 65));} decode();";
-    // let ceasarCipher = `function isUpperCase(str) {
-    //     return str === str.toUpperCase();
-    // } 
+    // let ceasarCipher = "function decode() {return [STRING].toUpperCase().replace(/[A-Z]/g, c => String.fromCharCode((c.charCodeAt(0) - 65 - [FROMKEY]) % 26 + 65));} decode();";
+    let ceasarCipher = `function isUpperCase(str) {
+        return str === str.toUpperCase();
+    } 
 
-    // function decode(str, key) {
-    //     let decipher = '';
-    //     for(let i = 0; i < str.length; i++) {
-    //         if (isUpperCase(str[i])){
-    //             decipher += String.fromCharCode((str.charCodeAt(i) + key + 65) % 26 + 65);
-    //         } else {
-    //             decipher += String.fromCharCode((str.charCodeAt(i) + key + 97) % 26 + 97);
-    //         }
-    //     }
-    //     return decipher;
-    // }
-    // decode([STRING], [FROMKEY]);
-    // `;
+    function decode() {
+        let result = '';
+         let str = [STRING];
+         let key = [FROMKEY];
+        for(let i = 0; i < str.length; i++) {
+            let c = str.charCodeAt(i);
+		    if (65 <= c && c <=  90){
+                 result += String.fromCharCode((c - 65 - key) % 26 + 65);  // Uppercase
+            }   else if (97 <= c && c <= 122){
+                 result += String.fromCharCode((c - 97 - key) % 26 + 97);  // Lowercase
+            } else  {
+                result += str.charAt(i);  // Copy
+            }                    
+        }
+        return result;
+    }
+    decode();
+    `;
 
 
     // console.log("messagesCrypted[5]", messagesCrypted);
