@@ -48,24 +48,24 @@ async function getMessagesCrypted() {
 }
 
 async function getCodeToExecute(langage) {
-    // let ceasarCipher = "function decode() {return [STRING].replace(/[A-Za-z]/g, c => String.fromCharCode((c.charCodeAt(0) - 65 - [FROMKEY]) % 26 + 65));} decode();";
-    let ceasarCipher = `function isUpperCase(str) {
-        return str === str.toUpperCase();
-    } 
+    let ceasarCipher = "function decode() {return [STRING].toUpperCase().replace(/[A-Z]/g, c => String.fromCharCode((c.charCodeAt(0) - 65 - [FROMKEY]) % 26 + 65));} decode();";
+    // let ceasarCipher = `function isUpperCase(str) {
+    //     return str === str.toUpperCase();
+    // } 
 
-    let ceaserCipher = (str, key) => {
-        let decipher = '';
-        for(let i = 0; i < str.length; i++) {
-            if(isUpperCase(str[i])){
-                decipher += String.fromCharCode((str.charCodeAt(i) + key + 65) % 26 + 65);
-          }else{
-            decipher += String.fromCharCode((str.charCodeAt(i) + key + 97) % 26 + 97);
-          }
-        }
-        return decipher;
-    }
-    ceasarCipher([STRING], [FROMKEY]);
-    `;
+    // function decode(str, key) {
+    //     let decipher = '';
+    //     for(let i = 0; i < str.length; i++) {
+    //         if (isUpperCase(str[i])){
+    //             decipher += String.fromCharCode((str.charCodeAt(i) + key + 65) % 26 + 65);
+    //         } else {
+    //             decipher += String.fromCharCode((str.charCodeAt(i) + key + 97) % 26 + 97);
+    //         }
+    //     }
+    //     return decipher;
+    // }
+    // decode([STRING], [FROMKEY]);
+    // `;
 
 
     // console.log("messagesCrypted[5]", messagesCrypted);

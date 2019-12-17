@@ -153,19 +153,17 @@ export class DecryptComponent implements OnInit {
             for (let i = this.batch.data.fromKey; i < this.batch.data.toKey; i++) {
                 codeToExecuteCopy = this.codeToExecute;
                 codeToExecuteCopy = codeToExecuteCopy.replace('[FROMKEY]', i.toString());
-                console.log("TCL: DecryptComponent -> getBatch -> codeToExecuteCopy", codeToExecuteCopy)
 
                 // tslint:disable-next-line:no-eval
                 const messageDecrypted = eval(codeToExecuteCopy);
-                console.log("TCL: DecryptComponent -> getBatch -> messageDecrypted", messageDecrypted)
-                if (messageDecrypted.includes('Tu déconnes pépé !')) {
+                if (messageDecrypted.includes('Tu déconnes pépé !'.toUpperCase())) {
                     this.result = 'Le message décodé est : ' + messageDecrypted + ' avec la clé : ' + i.toString();
                     // this.sendMessage(this.messageDecrypted);
                     const decryptedBatch: decryptedBatch = {
                         messageCrypted: btoa(this.batch.data.message),
                         messageDecrypted: btoa(messageDecrypted),
                         key: i,
-                    }
+                    };
                     this.sendDecryptedBatch(decryptedBatch);
                     console.log("TCL: DecryptComponent -> getBatch -> decryptedBatch", decryptedBatch)
                     this.batch = null;
@@ -187,10 +185,10 @@ export class DecryptComponent implements OnInit {
         this.socketService.sendDecryptedBatch(decryptedBatch);
     }
 
-    public caesarCipher() {
-        return 'Vw féeqppgu réré ! N\'jqnqecwuvg c xtckogpv gzkuvé'.toUpperCase()
-            .replace(/[A-Z]/g, c => String.fromCharCode((c.charCodeAt(0) - 65 - 1) % 26 + 65));
-    }
+    // public caesarCipher() {
+    //     return 'Vw féeqppgu réré ! N\'jqnqecwuvg c xtckogpv gzkuvé'.toUpperCase()
+    //         .replace(/[A-Z]/g, c => String.fromCharCode((c.charCodeAt(0) - 65 - 1) % 26 + 65));
+    // }
 
     public getProfil() {
         this.user = new User();
