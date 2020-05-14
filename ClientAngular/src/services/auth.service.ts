@@ -20,6 +20,10 @@ export class AuthService {
         return this.httpClient.get(this.authApi, { headers });
     }
 
+    public subscribe() {
+        
+    }
+
     public getCodeToExecute(token: string, langage: { langage: string }) {
         const headers = new HttpHeaders({
             'x-access-token': token, 'Access-Control-Allow-Origin': this.allowedOrigin,
